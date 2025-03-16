@@ -1,14 +1,15 @@
-import dotenv from 'dotenv'
-import path from 'path'
+import dotenv from 'dotenv';
 
-dotenv.config({
-    path: path.join(
-        process.cwd(),
-        '.env'
-    )
-})
+interface IConfig {
+    PORT: string | undefined;
+    DATABASE_URL: string | undefined;
+}
 
-export default {
+dotenv.config();
+
+const config: IConfig = {
     PORT: process.env.PORT,
     DATABASE_URL: process.env.DATABASE_URL
-}
+};
+
+export default config;

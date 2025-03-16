@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import { Student } from './student.interface';
-// import { Student } from './student.interface';
 
 const createStudent = async (req: Request, res: Response) => {
     try {
@@ -11,11 +10,8 @@ const createStudent = async (req: Request, res: Response) => {
             student: Student
         } = req.body;
 
-        // Creating the student in the database
         const result = await StudentServices.createStudentIntoDB(studentData);
-
-        // Returning a successful response
-        res.status(201) // Use 201 for successful creation
+        res.status(201)
             .json({
                 status: 201,
                 success: true,
@@ -23,17 +19,17 @@ const createStudent = async (req: Request, res: Response) => {
                 data: result,
                 responseTime: `${Date.now() - (req.startTime as number)}ms`
             });
-    } catch (err) {
+    }
+    catch (err) {
         console.error(err);
-
-        // Return error response
+        const error = err as Error;
         res.status(500)
             .json({
                 status: 500,
                 success: false,
                 message: 'An error occurred while creating the student',
                 responseTime: `${Date.now() - (req.startTime as number)}ms`,
-                error: err.message || 'Unknown error'
+                error: error.message || 'Unknown error'
             });
     }
 };
@@ -48,17 +44,55 @@ const getAllStudents = async (req: Request, res: Response) => {
                 success: true,
                 message: 'Student all student successfully',
                 responseTime: `${Date.now() - (req.startTime as number)}ms`,
-                totalStudetnt: result.length, 
+                totalStudetnt: result.length,
                 data: result,
             });
     }
     catch (err) {
         console.log(err);
+        const error = err as Error;
+        res.status(500)
+            .json({
+                status: 500,
+                success: false,
+                message: 'An error occurred while creating the student',
+                responseTime: `${Date.now() - (req.startTime as number)}ms`,
+                error: error.message || 'Unknown error'
+            });
+    }
+};
+
+const getSingleStudent = async (req: Request, res: Response) => {
+    try {
+        const { studentId } = req.params;
+
+        const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+        res.status(200)
+            .json({
+                status: 200,
+                success: true,
+                message: 'Student is retrieved succesfully',
+                responseTime: `${Date.now() - (req.startTime as number)}ms`,
+                data: result,
+            });
+    }
+    catch (err) {
+        console.log(err);
+        const error = err as Error;
+        res.status(500)
+            .json({
+                status: 500,
+                success: false,
+                message: 'An error occurred while creating the student',
+                responseTime: `${Date.now() - (req.startTime as number)}ms`,
+                error: error.message || 'Unknown error'
+            });
     }
 };
 
 export const StudentControllers = {
     createStudent,
     getAllStudents,
-    // getSingleStudent,
+    getSingleStudent,
 };
