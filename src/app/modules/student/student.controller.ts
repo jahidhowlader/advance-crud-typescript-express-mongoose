@@ -1,36 +1,45 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import { Student } from './student.interface';
+import { studentValidationSchema } from './student.validation';
 
-const createStudent = async (req: Request, res: Response) => {
+export const createStudent = async (req: Request, res: Response) => {
+    const startTime = req.startTime as number;
+
     try {
-        const {
-            student: studentData
-        }: {
-            student: Student
-        } = req.body;
+        const { student }: { student: Student } = req.body;
 
-        const result = await StudentServices.createStudentIntoDB(studentData);
-        res.status(201)
-            .json({
-                status: 201,
-                success: true,
-                message: 'Student created successfully',
-                data: result,
-                responseTime: `${Date.now() - (req.startTime as number)}ms`
-            });
-    }
-    catch (err) {
-        console.error(err);
-        const error = err as Error;
-        res.status(500)
-            .json({
-                status: 500,
+        // Validate request body
+        const { error } = studentValidationSchema.validate(student);
+        if (error) {
+            return res.status(400).json({
+                status: 400,
                 success: false,
-                message: 'An error occurred while creating the student',
-                responseTime: `${Date.now() - (req.startTime as number)}ms`,
-                error: error.message || 'Unknown error'
+                message: 'Validation failed',
+                responseTime: `${Date.now() - startTime}ms`,
+                error: error.details.map(d => d.message)
             });
+        }
+
+        // Create student
+        const createdStudent = await StudentServices.createStudentIntoDB(student);
+        return res.status(201).json({
+            status: 201,
+            success: true,
+            message: 'Student created successfully',
+            data: createdStudent,
+            responseTime: `${Date.now() - startTime}ms`
+        });
+
+    } catch (err) {
+        const error = err as Error;
+        return res.status(500).json({
+            status: 500,
+            success: false,
+            message: 'Internal server error',
+            responseTime: `${Date.now() - startTime}ms`,
+            error: error.message || 'Unknown error'
+        });
     }
 };
 

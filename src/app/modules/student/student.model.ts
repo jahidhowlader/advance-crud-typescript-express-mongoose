@@ -87,7 +87,7 @@ const studentSchema = new Schema<Student>({
     },
     name: {
         type: userNameSchema,
-        required: [true, "Name is required"],
+        required: [true, "Name is required"]
     },
     gender: {
         type: String,
@@ -105,6 +105,7 @@ const studentSchema = new Schema<Student>({
     email: {
         type: String,
         required: [true, "Email is required"],
+        unique: [true, 'email must be unique'],
         trim: true,
         lowercase: true, // Converts email to lowercase
     },
