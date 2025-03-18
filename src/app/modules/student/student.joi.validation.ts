@@ -75,7 +75,7 @@ export const userNameValidationSchema = Joi.object({
         }),
 });
 
-export const studentValidationSchema = Joi.object({
+const studentValidationSchemaWithJoi = Joi.object({
     id: Joi.string()
         .trim()
         .required()
@@ -140,3 +140,5 @@ export const studentValidationSchema = Joi.object({
         'any.only': 'Status must be either active or blocked',
     }),
 });
+
+export default studentValidationSchemaWithJoi

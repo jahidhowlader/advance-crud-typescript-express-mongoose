@@ -11,7 +11,7 @@ const userNameSchema = new Schema<StudentName>({
     },
     middleName: {
         type: String,
-        trim: true,
+        trim: true
     },
     lastName: {
         type: String,

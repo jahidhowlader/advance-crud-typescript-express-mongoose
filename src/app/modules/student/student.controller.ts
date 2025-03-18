@@ -1,28 +1,44 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import { Student } from './student.interface';
-import { studentValidationSchema } from './student.validation';
+import studentValidationSchemaWithZod from './student.zod.validation';
+import { ZodError } from 'zod';
+// import studentValidationSchemaWithJoi from './student.joi.validation';
+
 
 export const createStudent = async (req: Request, res: Response) => {
     const startTime = req.startTime as number;
 
-    try {
-        const { student }: { student: Student } = req.body;
+    // Validate request body with JOI
+    // const { error, value } = studentValidationSchemaWithJoi.validate(studentData);
+    // if (error) {
+    //     return res.status(400).json({
+    //         status: 400,
+    //         success: false,
+    //         message: 'Validation failed',
+    //         responseTime: `${Date.now() - startTime}ms`,
+    //         error: error.details.map(d => d.message)
+    //     });
+    // }
 
-        // Validate request body
-        const { error } = studentValidationSchema.validate(student);
-        if (error) {
-            return res.status(400).json({
-                status: 400,
-                success: false,
-                message: 'Validation failed',
-                responseTime: `${Date.now() - startTime}ms`,
-                error: error.details.map(d => d.message)
-            });
-        }
+    // Create student
+    //  const createdStudent = await StudentServices.createStudentIntoDB(value);
+    //  return res.status(201).json({
+    //      status: 201,
+    //      success: true,
+    //      message: 'Student created successfully',
+    //      data: createdStudent,
+    //      responseTime: `${Date.now() - startTime}ms`
+    //  });
+
+    const { student: studentData }: { student: Student } = req.body;
+
+    // Validate request body with JOD
+    try {
+        const zodParsedData = studentValidationSchemaWithZod.parse(studentData)
 
         // Create student
-        const createdStudent = await StudentServices.createStudentIntoDB(student);
+        const createdStudent = await StudentServices.createStudentIntoDB(zodParsedData);
         return res.status(201).json({
             status: 201,
             success: true,
@@ -30,15 +46,27 @@ export const createStudent = async (req: Request, res: Response) => {
             data: createdStudent,
             responseTime: `${Date.now() - startTime}ms`
         });
+    }
+    catch (error) {
+        // Zod Error
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: 'Validation failed',
+                responseTime: `${Date.now() - startTime}ms`,
+                error: error.errors[0]['message']
+            });
+        }
 
-    } catch (err) {
-        const error = err as Error;
+        // Mongoose Error
+        const err = error as Error
         return res.status(500).json({
             status: 500,
             success: false,
             message: 'Internal server error',
             responseTime: `${Date.now() - startTime}ms`,
-            error: error.message || 'Unknown error'
+            error: err.message || 'Unknown error'
         });
     }
 };

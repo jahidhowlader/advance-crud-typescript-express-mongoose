@@ -1,7 +1,7 @@
 
 export type StudentName = {
     firstName: string
-    middleName: string
+    middleName?: string | undefined
     lastName: string
 }
 
@@ -29,7 +29,7 @@ export type Student = {
     email: string
     contactNo: string
     emergencyContactNo: string
-    bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "o-" | "AB+" | "AB-"
+    bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-"
     presentAddress: string
     permanentAddress: string
     guardian: StudentGuardian
