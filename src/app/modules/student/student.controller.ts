@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
-import { Student } from './student.interface';
+import { TStudent } from './student.interface';
 import studentValidationSchemaWithZod from './student.zod.validation';
 import { ZodError } from 'zod';
 // import studentValidationSchemaWithJoi from './student.joi.validation';
@@ -31,7 +31,7 @@ export const createStudent = async (req: Request, res: Response) => {
     //      responseTime: `${Date.now() - startTime}ms`
     //  });
 
-    const { student: studentData }: { student: Student } = req.body;
+    const { student: studentData }: { student: TStudent } = req.body;
 
     // Validate request body with JOD
     try {
@@ -39,6 +39,10 @@ export const createStudent = async (req: Request, res: Response) => {
 
         // Create student
         const createdStudent = await StudentServices.createStudentIntoDB(zodParsedData);
+        console.log({
+            createdStudent
+        });
+
         return res.status(201).json({
             status: 201,
             success: true,
@@ -64,7 +68,7 @@ export const createStudent = async (req: Request, res: Response) => {
         return res.status(500).json({
             status: 500,
             success: false,
-            message: 'Internal server error',
+            message: err,//'Internal server error',
             responseTime: `${Date.now() - startTime}ms`,
             error: err.message || 'Unknown error'
         });

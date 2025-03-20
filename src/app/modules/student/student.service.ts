@@ -1,8 +1,15 @@
-import { Student } from './student.interface';
+import { TStudent } from './student.interface';
 import { StudentModel } from './student.model';
 
-const createStudentIntoDB = async (student: Student) => {
-    const result = await StudentModel.create(student);
+const createStudentIntoDB = async (studentData: TStudent) => {
+
+    const student = new StudentModel(studentData)
+
+    if (await student.isUserExist(studentData.id)) {
+        throw new Error('Student Id is already exist')
+    }
+
+    const result = await student.save()
     return result;
 };
 

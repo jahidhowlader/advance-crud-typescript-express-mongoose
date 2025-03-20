@@ -1,11 +1,12 @@
+import { Model } from "mongoose";
 
-export type StudentName = {
+export type TStudentName = {
     firstName: string
     middleName?: string | undefined
     lastName: string
 }
 
-export type StudentGuardian = {
+export type TStudentGuardian = {
     fatherName: string;
     fatherOccupation: string;
     fatherContactNo: string;
@@ -14,16 +15,16 @@ export type StudentGuardian = {
     motherContactNo: string;
 };
 
-export type StudentLocalGuardian = {
+export type TStudentLocalGuardian = {
     name: string;
     occupation: string;
     contactNo: string;
     address: string;
 };
 
-export type Student = {
+export type TStudent = {
     id: string
-    name: StudentName
+    name: TStudentName
     gender: "male" | "female"
     dateOfBirth: string
     email: string
@@ -32,8 +33,14 @@ export type Student = {
     bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-"
     presentAddress: string
     permanentAddress: string
-    guardian: StudentGuardian
-    localGuardian: StudentLocalGuardian
+    guardian: TStudentGuardian
+    localGuardian: TStudentLocalGuardian
     profileImg?: string;
     isActive: 'active' | 'blocked';
 }
+
+export type TStudentMethods = {
+    isUserExist(id: string): Promise<TStudent | null>
+}
+
+export type StudentModelExtend = Model<TStudent, Record<string, never>, TStudentMethods>;
