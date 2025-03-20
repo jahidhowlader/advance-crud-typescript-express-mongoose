@@ -3,13 +3,15 @@ import { StudentModel } from './student.model';
 
 const createStudentIntoDB = async (studentData: TStudent) => {
 
-
-    // For Creating Static Methods
-    if (await StudentModel.isUserExist(studentData.id)) {
-        throw new Error('Student Id is already exist')
-    }
     const result = await StudentModel.create(studentData)
     return result
+
+    // For Creating Static Methods
+    // if (await StudentModel.isUserExist(studentData.id)) {
+    //     throw new Error('Student Id is already exist')
+    // }
+    // const result = await StudentModel.create(studentData)
+    // return result
 
     // For Creating Instance Methods 
     // const student = new StudentModel(studentData)

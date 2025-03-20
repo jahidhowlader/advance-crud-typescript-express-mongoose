@@ -1,5 +1,3 @@
-import { Model } from "mongoose";
-
 export type TStudentName = {
     firstName: string
     middleName?: string | undefined
@@ -25,6 +23,7 @@ export type TStudentLocalGuardian = {
 export type TStudent = {
     id: string
     name: TStudentName
+    password: string
     gender: "male" | "female"
     dateOfBirth: string
     email: string
@@ -40,10 +39,9 @@ export type TStudent = {
 }
 
 // For Creating Static Methods
-export interface TStudentMethods extends Model<TStudent> {
-    isUserExist(id: string): Promise<TStudent | null>
-}
-
+// export interface TStudentMethods extends Model<TStudent> {
+//     isUserExist(id: string): Promise<TStudent | null>
+// }
 
 // For Creating Instance Methods
 // export type TStudentMethods = {

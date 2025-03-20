@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentMethods, TStudentName } from "./student.interface";
+import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentName } from "./student.interface";
+import bcrypt from 'bcrypt';
+import config from "../../config";
 
 const userNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -78,7 +80,7 @@ const localGuardianSchema = new Schema<TStudentLocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<TStudent, TStudentMethods>({
+const studentSchema = new Schema<TStudent>({
     id: {
         type: String,
         required: [true, 'ID is required'],
@@ -88,6 +90,10 @@ const studentSchema = new Schema<TStudent, TStudentMethods>({
     name: {
         type: userNameSchema,
         required: [true, "Name is required"]
+    },
+    password: {
+        type: String,
+        required: [true, "Password is required"]
     },
     gender: {
         type: String,
@@ -160,12 +166,19 @@ const studentSchema = new Schema<TStudent, TStudentMethods>({
     },
 });
 
-studentSchema.statics.isUserExist = async function (id: string) {
-    const existingStudent = await StudentModel.findOne({ id })
-    return existingStudent
-}
+studentSchema.pre('save', async function (next) {
+    this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
+    next()
+})
 
-export const StudentModel = model<TStudent, TStudentMethods>('Student', studentSchema);
+export const StudentModel = model<TStudent>('Student', studentSchema);
+
+// For Creating Static Methods
+// studentSchema.statics.isUserExist = async function (id: string) {
+//     const existingStudent = await StudentModel.findOne({ id })
+//     return existingStudent
+// }
+// export const StudentModel = model<TStudent, TStudentMethods>('Student', studentSchema);
 
 // For Creating Instance Methods
 // const studentSchema = new Schema<TStudent, StudentModelExtend, TStudentMethods>({})
