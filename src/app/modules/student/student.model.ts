@@ -171,6 +171,11 @@ studentSchema.pre('save', async function (next) {
     next()
 })
 
+studentSchema.post('save', async function (doc, next) {
+    doc.password = "404"
+    next()
+})
+
 export const StudentModel = model<TStudent>('Student', studentSchema);
 
 // For Creating Static Methods
