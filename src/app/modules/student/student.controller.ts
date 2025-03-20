@@ -36,13 +36,8 @@ export const createStudent = async (req: Request, res: Response) => {
     // Validate request body with JOD
     try {
         const zodParsedData = studentValidationSchemaWithZod.parse(studentData)
-
         // Create student
         const createdStudent = await StudentServices.createStudentIntoDB(zodParsedData);
-        console.log({
-            createdStudent
-        });
-
         return res.status(201).json({
             status: 201,
             success: true,
@@ -68,9 +63,9 @@ export const createStudent = async (req: Request, res: Response) => {
         return res.status(500).json({
             status: 500,
             success: false,
-            message: err,//'Internal server error',
+            message: err.message,//'Internal server error',
             responseTime: `${Date.now() - startTime}ms`,
-            error: err.message || 'Unknown error'
+            error: err || 'Unknown error'
         });
     }
 };
@@ -78,7 +73,6 @@ export const createStudent = async (req: Request, res: Response) => {
 const getAllStudents = async (req: Request, res: Response) => {
     try {
         const result = await StudentServices.getAllStudentsFromDB();
-
         res.status(200)
             .json({
                 status: 200,
@@ -106,9 +100,7 @@ const getAllStudents = async (req: Request, res: Response) => {
 const getSingleStudent = async (req: Request, res: Response) => {
     try {
         const { studentId } = req.params;
-
         const result = await StudentServices.getSingleStudentFromDB(studentId);
-
         res.status(200)
             .json({
                 status: 200,

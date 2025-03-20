@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { StudentModelExtend, TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentMethods, TStudentName } from "./student.interface";
+import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentMethods, TStudentName } from "./student.interface";
 
 const userNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -78,7 +78,7 @@ const localGuardianSchema = new Schema<TStudentLocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<TStudent, StudentModelExtend, TStudentMethods>({
+const studentSchema = new Schema<TStudent, TStudentMethods>({
     id: {
         type: String,
         required: [true, 'ID is required'],
@@ -160,9 +160,17 @@ const studentSchema = new Schema<TStudent, StudentModelExtend, TStudentMethods>(
     },
 });
 
-studentSchema.methods.isUserExist = async function (id: string) {
+studentSchema.statics.isUserExist = async function (id: string) {
     const existingStudent = await StudentModel.findOne({ id })
     return existingStudent
 }
 
-export const StudentModel = model<TStudent, StudentModelExtend>('Student', studentSchema);
+export const StudentModel = model<TStudent, TStudentMethods>('Student', studentSchema);
+
+// For Creating Instance Methods
+// const studentSchema = new Schema<TStudent, StudentModelExtend, TStudentMethods>({})
+// studentSchema.methods.isUserExist = async function (id: string) {
+//     const existingStudent = await StudentModel.findOne({ id })
+//     return existingStudent
+// }
+// export const StudentModel = model<TStudent, StudentModelExtend>('Student', studentSchema);
