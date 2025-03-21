@@ -164,15 +164,26 @@ const studentSchema = new Schema<TStudent>({
         },
         default: 'active',
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
+// Pre Save Document Middleware for create student
 studentSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
     next()
 })
-
+// after Save Document Middleware for create student
 studentSchema.post('save', async function (doc, next) {
     doc.password = "404"
+    next()
+})
+
+// query Middleware for Get ALL User
+studentSchema.pre('find', async function (next) {
+    this.find({ isDeleted: { $ne: false } })
     next()
 })
 

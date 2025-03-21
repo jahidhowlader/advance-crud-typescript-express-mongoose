@@ -143,6 +143,9 @@ const studentValidationSchemaWithZod = z.object({
     isActive: z.enum(['active', 'blocked'], {
         errorMap: () => ({ message: 'Status must be either active or blocked' })
     }).default('active'),
+    isDeleted: z.boolean({
+        errorMap: () => ({ message: "IsDeleted is required" })
+    })
 });
 
 export default studentValidationSchemaWithZod
