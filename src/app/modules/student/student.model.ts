@@ -186,6 +186,11 @@ studentSchema.pre('find', async function (next) {
     this.find({ isDeleted: { $ne: false } })
     next()
 })
+// query Middleware for Get Single User
+studentSchema.pre('findOne', async function (next) {
+    this.find({ isDeleted: { $ne: false } })
+    next()
+})
 
 export const StudentModel = model<TStudent>('Student', studentSchema);
 
