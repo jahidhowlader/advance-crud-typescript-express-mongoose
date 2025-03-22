@@ -183,12 +183,24 @@ studentSchema.post('save', async function (doc, next) {
 
 // query Middleware for Get ALL User
 studentSchema.pre('find', async function (next) {
-    this.find({ isDeleted: { $ne: false } })
+    this.find({ isDeleted: { $ne: true } })
     next()
 })
 // query Middleware for Get Single User
 studentSchema.pre('findOne', async function (next) {
-    this.find({ isDeleted: { $ne: false } })
+    this.find({ isDeleted: { $ne: true } })
+    next()
+})
+
+// Aggregate Middleware for Get Single User
+studentSchema.pre('aggregate', async function (next) {
+    this.pipeline().unshift({
+        $match: {
+            isDeleted: {
+                $ne: true
+            }
+        }
+    })
     next()
 })
 

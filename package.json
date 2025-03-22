@@ -7,7 +7,8 @@
     "lint": "eslint --ext .ts",
     "lint:fix": "npm run lint --fix",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "start:prd": "node ./dist/server.js"
+    "start:prd": "node ./dist/server.js",
+    "typescript" : "ts-node-dev --respawn --transpile-only typescript.ts"
   },
   "keywords": [],
   "author": "",

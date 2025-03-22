@@ -117,7 +117,7 @@ const getSingleStudent = async (req: Request, res: Response) => {
             .json({
                 status: 500,
                 success: false,
-                message: 'An error occurred while creating the student',
+                message: 'An error occurred while retrieved the student',
                 responseTime: `${Date.now() - (req.startTime as number)}ms`,
                 error: error.message || 'Unknown error'
             });
