@@ -1,6 +1,6 @@
 export type TStudentName = {
     firstName: string
-    middleName?: string | undefined
+    middleName: string
     lastName: string
 }
 

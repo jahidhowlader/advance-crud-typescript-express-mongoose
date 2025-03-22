@@ -67,16 +67,18 @@ const localGuardianValidationSchema = z.object({
 
 const userNameValidationSchema = z.object({
     firstName: z.string({
-        errorMap: () => ({ message: "firstName is required" })
+        errorMap: () => ({ message: "First name is required" })
     })
         .regex(/^[a-zA-Z]+$/, "First name can only contain letters")
         .min(1, "First name is required")
         .max(10, "First name must be at most 10 characters"),
-    middleName: z.string()
+    middleName: z.string({
+        errorMap: () => ({ message: "Middle name is required" })
+    })
         .regex(/^[a-zA-Z]+$/, "Middle name can only contain letters")
-        .optional(),
+        .or(z.literal("")),
     lastName: z.string({
-        errorMap: () => ({ message: "lastName is required" })
+        errorMap: () => ({ message: "Last name is required" })
     })
         .regex(/^[a-zA-Z]+$/, "Last name can only contain letters")
         .min(1, "Last name is required")
