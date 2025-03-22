@@ -42,6 +42,8 @@ const updateSingleStudentInDB = async (id: string, payload: Partial<TStudent>) =
         { id },
         { $set: payload },
         { new: true, runValidators: true }
+        // new: true means By default findOneAndUpdate() return old data new:true meand return new data
+        // runValidators: true means By default findOneAndUpdate() do not check validation rules (schema level validation) ## runValidators: true mongoose schema validation enforce 
     );
     return result;
 };

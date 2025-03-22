@@ -208,10 +208,10 @@ studentSchema.pre('aggregate', async function (next) {
     next()
 })
 
-// studentSchema.pre('findOneAndUpdate', async function (next) {
-//     this.findOneAndUpdate({ isDeleted: { $ne: true } })
-//     next()
-// })
+studentSchema.pre('findOneAndUpdate', async function (next) {
+    this.setQuery({ ...this.getQuery(), isDeleted: { $ne: true } });
+    next()
+})
 
 // Mongoose Virtual 
 studentSchema.virtual('fullname').get(function () {
