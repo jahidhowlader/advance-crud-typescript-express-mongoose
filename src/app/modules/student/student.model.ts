@@ -168,6 +168,10 @@ const studentSchema = new Schema<TStudent>({
         type: Boolean,
         default: false
     }
+}, {
+    toJSON: {
+        virtuals: true
+    }
 });
 
 // Pre Save Document Middleware for create student
@@ -202,6 +206,15 @@ studentSchema.pre('aggregate', async function (next) {
         }
     })
     next()
+})
+
+// Mongoose Virtual 
+studentSchema.virtual('fullname').get(function () {
+    const {
+        firstName,
+        lastName
+    } = this.name
+    return `${firstName} ${lastName}`
 })
 
 export const StudentModel = model<TStudent>('Student', studentSchema);
