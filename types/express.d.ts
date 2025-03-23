@@ -1,8 +1,7 @@
-// types/express.d.ts
-import { } from 'express';
+import 'express';
 
 declare module 'express' {
-    interface Request {
+    export interface Request {
         startTime?: number;
     }
 }

@@ -8,7 +8,7 @@
     "lint:fix": "npm run lint --fix",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prd": "node ./dist/server.js",
-    "typescript" : "ts-node-dev --respawn --transpile-only typescript.ts"
+    "typescript": "ts-node-dev --respawn --transpile-only typescript.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "joi": "^17.13.3",
     "mongodb": "^6.14.2",
     "mongoose": "^8.12.1",
+    "winston": "^3.17.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
