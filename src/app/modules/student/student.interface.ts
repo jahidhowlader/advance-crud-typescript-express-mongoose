@@ -35,8 +35,6 @@ export type TStudent = {
     guardian: TStudentGuardian
     localGuardian: TStudentLocalGuardian
     profileImg?: string;
-    isActive: 'active' | 'blocked';
-    isDeleted: boolean
 }
 
 // For Creating Static Methods

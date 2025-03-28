@@ -147,13 +147,7 @@ const studentValidationSchemaWithZod = z.object({
     profileImg: z.string()
         .url("Profile image must be a valid URL")
         .trim()
-        .optional(),
-    isActive: z.enum(['active', 'blocked'], {
-        errorMap: () => ({ message: 'Status must be either active or blocked' })
-    }).default('active'),
-    isDeleted: z.boolean({
-        errorMap: () => ({ message: "IsDeleted is required" })
-    })
+        .optional()
 });
 
 export default studentValidationSchemaWithZod

@@ -1,26 +1,13 @@
 import { z } from "zod";
+import config from "../../config";
 
 const userValidationSchema = z.object({
-    id: z.string({
-        errorMap: () => ({ message: "ID is required" })
-    })
-        .trim()
-        .min(1, "ID is required"),
     password: z.string({
-        errorMap: () => ({ message: "Password is required" })
+        invalid_type_error: 'Password must be string.'
     })
-        .trim()
-        .min(6, "Password should minimum 6 characters"),
-    needsPasswordChange: z.boolean({
-        errorMap: () => ({ message: "Needs Password Change is required" })
-    }),
-    role: z.enum(['student', 'faculty', 'admin'], {
-        errorMap: () => ({ message: 'Rome must be student, faculty or admin' })
-    }),
-    isActive: z.enum(['in-progress', 'blocked'], {
-        errorMap: () => ({ message: 'Status must be either active or blocked' })
-    })
-    // .default('active'),
+        .min(6, "Password should minimum 6 characters")
+        .optional()
+        .default(config.DEFAULT_PASSWORD as string)
 })
 
 export default userValidationSchema
