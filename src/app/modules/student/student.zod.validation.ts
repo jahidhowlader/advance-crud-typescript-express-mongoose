@@ -4,65 +4,69 @@ const phonePattern = /^\+?[1-9]\d{1,3}\d{6,14}$/; // International phone number 
 
 const guardianValidationSchema = z.object({
     fatherName: z.string({
-        errorMap: () => ({ message: "father name is required" })
+        errorMap: () => ({ message: "Father's name is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Father's name can only contain letters and spaces")
         .trim()
         .min(1, "Father's name is required"),
     fatherOccupation: z.string({
-        errorMap: () => ({ message: "father occupation is required" })
+        errorMap: () => ({ message: "Father's occupation is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Father's occupation can only contain letters and spaces")
         .trim()
         .min(1, "Father's occupation is required"),
     fatherContactNo: z.string({
-        errorMap: () => ({ message: "father contactNo is required" })
+        errorMap: () => ({ message: "Father's contactNo is required" })
     })
         .regex(phonePattern, "Father's contact number must be a valid international phone number")
         .trim()
         .min(1, "Father's contact number is required"),
     motherName: z.string({
-        errorMap: () => ({ message: "mother name is required" })
+        errorMap: () => ({ message: "Mother's name is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Mother's name can only contain letters and spaces")
         .trim()
         .min(1, "Mother's name is required"),
     motherOccupation: z.string({
-        errorMap: () => ({ message: "mother occupation is required" })
+        errorMap: () => ({ message: "Mother's occupation is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Mother's occupation can only contain letters and spaces")
         .trim()
         .min(1, "Mother's occupation is required"),
     motherContactNo: z.string({
-        errorMap: () => ({ message: "mother contactNo is required" })
+        errorMap: () => ({ message: "Mother's contactNo is required" })
     })
         .regex(phonePattern, "Mother's contact number must be a valid international phone number")
         .trim()
-        .min(1, "Mother's contact number is required"),
+        .min(1, "Mother's contact number is required")
+}, {
+    required_error: "Guardian's Field is require"
 });
 
 const localGuardianValidationSchema = z.object({
     name: z.string({
-        errorMap: () => ({ message: "local guardian name is required" })
+        errorMap: () => ({ message: "Local guardian's name is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Local guardian's name can only contain letters and spaces")
         .trim()
         .min(1, "Local guardian's name is required"),
     occupation: z.string({
-        errorMap: () => ({ message: "local guardian occupation is required" })
+        errorMap: () => ({ message: "Local guardian's occupation is required" })
     })
         .regex(/^[a-zA-Z\s]+$/, "Local guardian's occupation can only contain letters and spaces")
         .trim()
         .min(1, "Local guardian's occupation is required"),
     contactNo: z.string({
-        errorMap: () => ({ message: "local guardian contactNo is required" })
+        errorMap: () => ({ message: "Local guardian's contactNo is required" })
     })
         .regex(phonePattern, "Local guardian's contact number must be a valid international phone number")
         .trim()
         .min(1, "Local guardian's contact number is required"),
     address: z.string({
-        errorMap: () => ({ message: "local guardian address is required" })
+        errorMap: () => ({ message: "Local guardian's address is required" })
     }).trim().min(1, "Local guardian's address is required"),
+}, {
+    required_error: "Local guardian's Field is require"
 });
 
 const userNameValidationSchema = z.object({
@@ -83,6 +87,8 @@ const userNameValidationSchema = z.object({
         .regex(/^[a-zA-Z]+$/, "Last name can only contain letters")
         .min(1, "Last name is required")
         .max(10, "Last name must be at most 10 characters"),
+}, {
+    required_error: "User name's Field is require"
 });
 
 const studentValidationSchemaWithZod = z.object({
