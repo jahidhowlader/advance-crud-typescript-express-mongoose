@@ -1,32 +1,36 @@
 import config from "../../config";
+import { TStudent } from "../student/student.interface";
+import { StudentModel } from "../student/student.model";
+import studentValidationSchemaWithZod from "../student/student.zod.validation";
 // import { TStudent } from "../student/student.interface";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 // import { StudentModel } from "../student/student.model";
 
-const createStudentIntoDB = async (password: string) => {
+const createStudentIntoDB = async (password: string, studentData: TStudent) => {
 
-    const user: Partial<TUser> = {
+    if (!studentData) {
+        throw new Error('Student data missing')
+    }
+
+    const userData: Partial<TUser> = {
         id: '2025100001',
         password: password ?? config.DEFAULT_PASSWORD,
         role: 'student'
     }
 
-    const createUserOperation = await UserModel.create(user)
+    const studentDataAfterValidation = studentValidationSchemaWithZod.parse(studentData)
+    // TODO: CHECK STUDENT ID IS EXIST
+    const newUser = await UserModel.create(userData)
 
-    // if (createUserOperation) {
+    if (newUser._id) {
 
-    // }
-    // else {
+        studentDataAfterValidation.id = newUser.id
+        studentDataAfterValidation.user = newUser._id
 
-    // }
-
-    console.log({
-        createUserOperation,
-        result: typeof createUserOperation,
-        id: createUserOperation.id
-    });
-
+        const newStudent = await StudentModel.create(studentDataAfterValidation)
+        return newStudent
+    }
 
 
 

@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
+import bcrypt from 'bcrypt';
+import config from "../../config";
 
 const UserSchema = new Schema<TUser>({
     id: {
@@ -29,6 +31,16 @@ const UserSchema = new Schema<TUser>({
     }
 }, {
     timestamps: true
+})
+
+UserSchema.pre('save', async function (next) {
+    this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
+    next()
+})
+// after Save Document Middleware for create student
+UserSchema.post('save', async function (doc, next) {
+    doc.password = "404"
+    next()
 })
 
 export const UserModel = model<TUser>('User', UserSchema)

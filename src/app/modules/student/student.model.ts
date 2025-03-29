@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentName } from "./student.interface";
-import bcrypt from 'bcrypt';
-import config from "../../config";
+// import bcrypt from 'bcrypt';
+// import config from "../../config";
 
 const userNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -87,13 +87,15 @@ const studentSchema = new Schema<TStudent>({
         unique: [true, 'ID must be unique'],
         trim: true,
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: [true, 'User id is required'],
+        unique: [true, 'User id must be unique'],
+        ref: 'User'
+    },
     name: {
         type: userNameSchema,
         required: [true, "Name is required"]
-    },
-    password: {
-        type: String,
-        required: [true, "Password is required"]
     },
     gender: {
         type: String,
@@ -155,72 +157,58 @@ const studentSchema = new Schema<TStudent>({
         type: String,
         default: "",
         trim: true,
-    },
-    isActive: {
-        type: String,
-        enum: {
-            values: ['active', 'blocked'],
-            message: "{VALUE} is not a valid status",
-        },
-        default: 'active',
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
     }
 }, {
-    toJSON: {
-        virtuals: true
-    }
+    timestamps: true
 });
 
 // Pre Save Document Middleware for create student
-studentSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
-    next()
-})
+// studentSchema.pre('save', async function (next) {
+//     this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
+//     next()
+// })
 // after Save Document Middleware for create student
-studentSchema.post('save', async function (doc, next) {
-    doc.password = "404"
-    next()
-})
+// studentSchema.post('save', async function (doc, next) {
+//     doc.password = "404"
+//     next()
+// })
 
 // query Middleware for Get ALL User
-studentSchema.pre('find', async function (next) {
-    this.find({ isDeleted: { $ne: true } })
-    next()
-})
+// studentSchema.pre('find', async function (next) {
+//     this.find({ isDeleted: { $ne: true } })
+//     next()
+// })
 // query Middleware for Get Single User
-studentSchema.pre('findOne', async function (next) {
-    this.find({ isDeleted: { $ne: true } })
-    next()
-})
+// studentSchema.pre('findOne', async function (next) {
+//     this.find({ isDeleted: { $ne: true } })
+//     next()
+// })
 
 // Aggregate Middleware for Get Single User
-studentSchema.pre('aggregate', async function (next) {
-    this.pipeline().unshift({
-        $match: {
-            isDeleted: {
-                $ne: true
-            }
-        }
-    })
-    next()
-})
+// studentSchema.pre('aggregate', async function (next) {
+//     this.pipeline().unshift({
+//         $match: {
+//             isDeleted: {
+//                 $ne: true
+//             }
+//         }
+//     })
+//     next()
+// })
 
-studentSchema.pre('findOneAndUpdate', async function (next) {
-    this.setQuery({ ...this.getQuery(), isDeleted: { $ne: true } });
-    next()
-})
+// studentSchema.pre('findOneAndUpdate', async function (next) {
+//     this.setQuery({ ...this.getQuery(), isDeleted: { $ne: true } });
+//     next()
+// })
 
 // Mongoose Virtual 
-studentSchema.virtual('fullname').get(function () {
-    const {
-        firstName,
-        lastName
-    } = this.name
-    return `${firstName} ${lastName}`
-})
+// studentSchema.virtual('fullname').get(function () {
+//     const {
+//         firstName,
+//         lastName
+//     } = this.name
+//     return `${firstName} ${lastName}`
+// })
 
 export const StudentModel = model<TStudent>('Student', studentSchema);
 
