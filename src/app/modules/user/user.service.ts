@@ -1,8 +1,6 @@
 import config from "../../config";
 import { TStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
-import studentValidationSchemaWithZod from "../student/student.zod.validation";
-// import { TStudent } from "../student/student.interface";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 // import { StudentModel } from "../student/student.model";
@@ -19,16 +17,16 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
         role: 'student'
     }
 
-    const studentDataAfterValidation = studentValidationSchemaWithZod.parse(studentData)
+    // const studentDataAfterValidation = studentValidationSchemaWithZod.parse(studentData)
     // TODO: CHECK STUDENT ID IS EXIST
     const newUser = await UserModel.create(userData)
 
     if (newUser._id) {
 
-        studentDataAfterValidation.id = newUser.id
-        studentDataAfterValidation.user = newUser._id
+        studentData.id = newUser.id
+        studentData.user = newUser._id
 
-        const newStudent = await StudentModel.create(studentDataAfterValidation)
+        const newStudent = await StudentModel.create(studentData)
         return newStudent
     }
 

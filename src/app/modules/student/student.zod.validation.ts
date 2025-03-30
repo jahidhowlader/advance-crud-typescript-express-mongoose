@@ -99,79 +99,87 @@ const userNameValidationSchema = z.object({
 });
 
 const studentValidationSchemaWithZod = z.object({
-    id: z.string({
-        required_error: "ID ",
-        invalid_type_error: 'ID must be string.'
-    })
-        .trim()
-        .min(1, "ID is required")
-        .optional()
-    ,
-    user: z.string()
-        .regex(ObjectIdRegex, 'Invalid User ID')
-        .refine(val => Types.ObjectId.isValid(val), {
-            message: 'Invalid User ID format',
+    body: z.object({
+        student: z.object({
+            id: z.string({
+                required_error: "ID ",
+                invalid_type_error: 'ID must be string.'
+            })
+                .trim()
+                .min(1, "ID is required")
+                .optional()
+            ,
+            user: z.string()
+                .regex(ObjectIdRegex, 'Invalid User ID')
+                .refine(val => Types.ObjectId.isValid(val), {
+                    message: 'Invalid User ID format',
+                })
+                .transform((val) => new Types.ObjectId(val))
+                .optional(),
+            name: userNameValidationSchema,
+            password: z.string({
+                required_error: "Password is required"
+            })
+                .min(6, "Password must be greater than 6 character")
+                .max(20, "Password must be less than 20 character")
+                .optional(),
+            gender: z.enum(['male', 'female'], {
+                required_error: "Gender must be male or female",
+                invalid_type_error: "gender must be string"
+            }),
+            dateOfBirth: z.string({
+                required_error: "date of birth is required",
+                invalid_type_error: "date must be string"
+            })
+                .trim()
+                .min(1, "Date of birth is required"),
+            email: z.string({
+                required_error: "email is required",
+                invalid_type_error: "email must be string"
+            })
+                .email("Email must be a valid email address")
+                .trim()
+                .min(1, "Email is required"),
+            contactNo: z.string({
+                required_error: "contact no is required"
+            })
+                .regex(phonePattern, "Contact number must be a valid international phone number (e.g., +8801712345678)")
+                .trim()
+                .min(1, "Contact number is required"),
+            emergencyContactNo: z.string({
+                required_error: "emergency contact no is required"
+            })
+                .regex(phonePattern, "Emergency contact number must be a valid international phone number (e.g., +8801712345678)")
+                .trim()
+                .min(1, "Emergency contact number is required"),
+            bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], {
+                required_error: "Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-",
+                invalid_type_error: "blood group must be string"
+            }),
+            presentAddress: z.string({
+                required_error: "present address is required",
+                invalid_type_error: "present address must be string"
+            })
+                .trim()
+                .min(1, "Present address is required"),
+            permanentAddress: z.string({
+                required_error: "permanent address is required",
+                invalid_type_error: "permanent address must be string"
+            })
+                .trim()
+                .min(1, "Permanent address is required"),
+            guardian: guardianValidationSchema,
+            localGuardian: localGuardianValidationSchema,
+            profileImg: z.string()
+                .url("Profile image must be a valid URL")
+                .trim()
+                .optional()
+        }, {
+            required_error: "do not get student data"
         })
-        .transform((val) => new Types.ObjectId(val))
-        .optional(),
-    name: userNameValidationSchema,
-    password: z.string({
-        required_error: "Password is required"
+    }, {
+        required_error: "do not get request body"
     })
-        .min(6, "Password must be greater than 6 character")
-        .max(20, "Password must be less than 20 character")
-        .optional(),
-    gender: z.enum(['male', 'female'], {
-        required_error: "Gender must be male or female",
-        invalid_type_error: "gender must be string"
-    }),
-    dateOfBirth: z.string({
-        required_error: "date of birth is required",
-        invalid_type_error: "date must be string"
-    })
-        .trim()
-        .min(1, "Date of birth is required"),
-    email: z.string({
-        required_error: "email is required",
-        invalid_type_error: "email must be string"
-    })
-        .email("Email must be a valid email address")
-        .trim()
-        .min(1, "Email is required"),
-    contactNo: z.string({
-        required_error: "contact no is required"
-    })
-        .regex(phonePattern, "Contact number must be a valid international phone number (e.g., +8801712345678)")
-        .trim()
-        .min(1, "Contact number is required"),
-    emergencyContactNo: z.string({
-        required_error: "emergency contact no is required"
-    })
-        .regex(phonePattern, "Emergency contact number must be a valid international phone number (e.g., +8801712345678)")
-        .trim()
-        .min(1, "Emergency contact number is required"),
-    bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], {
-        required_error: "Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-",
-        invalid_type_error: "blood group must be string"
-    }),
-    presentAddress: z.string({
-        required_error: "present address is required",
-        invalid_type_error: "present address must be string"
-    })
-        .trim()
-        .min(1, "Present address is required"),
-    permanentAddress: z.string({
-        required_error: "permanent address is required",
-        invalid_type_error: "permanent address must be string"
-    })
-        .trim()
-        .min(1, "Permanent address is required"),
-    guardian: guardianValidationSchema,
-    localGuardian: localGuardianValidationSchema,
-    profileImg: z.string()
-        .url("Profile image must be a valid URL")
-        .trim()
-        .optional()
-});
+})
 
 export default studentValidationSchemaWithZod
