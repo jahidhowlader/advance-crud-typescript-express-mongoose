@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
-export const requestTime = (request: Request, response: Response, next: NextFunction) => {
+export const requestTime: RequestHandler = (request, response, next) => {
     request.startTime = Date.now();
     next();
 }

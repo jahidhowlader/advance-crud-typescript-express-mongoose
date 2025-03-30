@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
 import { status } from "http-status";
 
-const notFoundHandler = (request: Request, response: Response, next: NextFunction) => {
+const notFoundHandler: RequestHandler = (request, response, next) => {
 
     const startTime = request.startTime as number;
 
