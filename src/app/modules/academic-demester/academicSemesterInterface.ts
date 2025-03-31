@@ -15,7 +15,7 @@ export type TMonths =
     | 'November'
     | 'December';
 
-export type TCheckAcademicSemesternameAndCode = {
+export type TcheckAcademicSemesternameAndCodeMapper = {
     [key: string]: string
 }
 

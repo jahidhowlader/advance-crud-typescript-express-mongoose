@@ -6,11 +6,6 @@ import { AcademicSemesterService } from "./academicSemesterService";
 
 export const createAcademicSemester = catchAsync(async (request, response): Promise<Response | void> => {
 
-    // const { password: passwordFromRequestBody, student: studentData }: { password: string, student: TStudent } = request.body
-
-    // Validate request body with ZOD
-    // const { password } = userValidationSchema.parse({ password: passwordFromRequestBody })
-    // response data after create student
     const createdAcademicSemester = await AcademicSemesterService.crateAcademicSemesterIntoDB(request.body);
 
     // Send response to utility send response function
@@ -22,6 +17,45 @@ export const createAcademicSemester = catchAsync(async (request, response): Prom
     })
 })
 
+const getAllAcademicSemesters = catchAsync(async (request, response): Promise<Response | void> => {
+    const result = await AcademicSemesterService.getAllAcademicSemestersFromDB();
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Academic semesters are retrieved successfully',
+        data: result,
+    });
+
+});
+
+const getSingleAcademicSemester = catchAsync(async (request, response) => {
+    const { semesterId } = request.params;
+    const result = await AcademicSemesterService.getSingleAcademicSemesterFromDB(semesterId);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Academic semester is retrieved succesfully',
+        data: result,
+    });
+});
+
+const updateAcademicSemester = catchAsync(async (request, response) => {
+    const { semesterId } = request.params;
+    const result = await AcademicSemesterService.updateAcademicSemesterIntoDB(semesterId, request.body);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Academic semester is retrieved succesfully',
+        data: result,
+    });
+});
+
 export const AcademicSemesterController = {
-    createAcademicSemester
+    createAcademicSemester,
+    getAllAcademicSemesters,
+    getSingleAcademicSemester,
+    updateAcademicSemester
 } 
