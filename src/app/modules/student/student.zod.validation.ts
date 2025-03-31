@@ -98,7 +98,7 @@ const userNameValidationSchema = z.object({
     required_error: "User name's Field is require"
 });
 
-const studentValidationSchemaWithZod = z.object({
+const createStudentValidationSchema = z.object({
     body: z.object({
         student: z.object({
             id: z.string({
@@ -182,4 +182,6 @@ const studentValidationSchemaWithZod = z.object({
     })
 })
 
-export default studentValidationSchemaWithZod
+export const studentValidation = {
+    createStudentValidationSchema
+}
