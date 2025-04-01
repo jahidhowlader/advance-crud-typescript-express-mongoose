@@ -1,32 +1,41 @@
 import config from "../../config";
+import AcademicSemesterModel from "../academic-demester/academicSemesterModel";
 import { TStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
+import { generateStudentId } from "./user.utils";
 // import { StudentModel } from "../student/student.model";
 
-const createStudentIntoDB = async (password: string, studentData: TStudent) => {
+const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
-    if (!studentData) {
+    if (!payload) {
         throw new Error('Student data missing')
     }
 
+    // find academic semester info
+    const admissionSemester = await AcademicSemesterModel.findById(
+        payload.admissionSemester,
+    );
+
+    if (!admissionSemester) {
+        throw new Error('This semester not available')
+    }
+
     const userData: Partial<TUser> = {
-        id: '2025100001',
+        id: await generateStudentId(admissionSemester),
         password: password ?? config.DEFAULT_PASSWORD,
         role: 'student'
     }
 
-    // const studentDataAfterValidation = studentValidationSchemaWithZod.parse(studentData)
-    // TODO: CHECK STUDENT ID IS EXIST
     const newUser = await UserModel.create(userData)
 
     if (newUser._id) {
 
-        studentData.id = newUser.id
-        studentData.user = newUser._id
+        payload.id = newUser.id
+        payload.user = newUser._id
 
-        const newStudent = await StudentModel.create(studentData)
+        const newStudent = await StudentModel.create(payload)
         return newStudent
     }
 

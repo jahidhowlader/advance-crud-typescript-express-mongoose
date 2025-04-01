@@ -157,6 +157,10 @@ const studentSchema = new Schema<TStudent>({
         type: String,
         default: "",
         trim: true,
+    },
+    admissionSemester: {
+        type: Schema.Types.ObjectId,
+        ref: 'Academic-Semester'
     }
 }, {
     timestamps: true
