@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentName } from "./student.interface";
+import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentMethods, TStudentName } from "./student.interface";
 
 const userNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -78,7 +78,7 @@ const localGuardianSchema = new Schema<TStudentLocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<TStudent>({
+const studentSchema = new Schema<TStudent, TStudentMethods>({
     id: {
         type: String,
         required: [true, 'ID is required'],
@@ -159,6 +159,14 @@ const studentSchema = new Schema<TStudent>({
     admissionSemester: {
         type: Schema.Types.ObjectId,
         ref: 'Academic-Semester'
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Academic-Department',
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
     }
 }, {
     timestamps: true
@@ -186,12 +194,12 @@ studentSchema.pre('aggregate', function (next) {
 });
 
 //creating a custom static method
-studentSchema.statics.isUserExists = async function (id: string) {
+studentSchema.statics.isUserExist = async function (id: string) {
     const existingUser = await StudentModel.findOne({ id });
     return existingUser;
 };
 
-export const StudentModel = model<TStudent>('Student', studentSchema);
+export const StudentModel = model<TStudent, TStudentMethods>('Student', studentSchema);
 
 
 // Pre Save Document Middleware for create student

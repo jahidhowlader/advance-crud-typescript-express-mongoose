@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { status } from "http-status";
 
-const notFoundHandler: RequestHandler = (request, response, next) => {
+const notFoundHandler: RequestHandler = (request, response) => {
 
     const startTime = request.startTime as number;
 
