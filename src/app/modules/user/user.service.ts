@@ -1,4 +1,5 @@
 import config from "../../config";
+import AppError from "../../errors/AppError";
 import AcademicSemesterModel from "../academic-semester/academicSemester.model";
 import { TStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
@@ -10,7 +11,7 @@ import { generateStudentId } from "./user.utils";
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
     if (!payload) {
-        throw new Error('Student data missing')
+        throw new AppError(400, 'Student data missing')
     }
 
     // find academic semester info
@@ -19,7 +20,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     );
 
     if (!admissionSemester) {
-        throw new Error('This semester not available')
+        throw new AppError(400, 'This semester not available')
     }
 
     const userData: Partial<TUser> = {
