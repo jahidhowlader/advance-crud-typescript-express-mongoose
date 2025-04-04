@@ -1,7 +1,5 @@
 import { model, Schema } from "mongoose";
 import { TStudent, TStudentGuardian, TStudentLocalGuardian, TStudentName } from "./student.interface";
-// import bcrypt from 'bcrypt';
-// import config from "../../config";
 
 const userNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -166,6 +164,36 @@ const studentSchema = new Schema<TStudent>({
     timestamps: true
 });
 
+// virtual
+studentSchema.virtual('fullName').get(function () {
+    return this.name.firstName + this.name.middleName + this.name.lastName;
+});
+
+// Query Middleware
+studentSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
+studentSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
+studentSchema.pre('aggregate', function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    next();
+});
+
+//creating a custom static method
+studentSchema.statics.isUserExists = async function (id: string) {
+    const existingUser = await StudentModel.findOne({ id });
+    return existingUser;
+};
+
+export const StudentModel = model<TStudent>('Student', studentSchema);
+
+
 // Pre Save Document Middleware for create student
 // studentSchema.pre('save', async function (next) {
 //     this.password = await bcrypt.hash(this.password, Number(config.BCRIPT_SALT))
@@ -205,7 +233,7 @@ const studentSchema = new Schema<TStudent>({
 //     next()
 // })
 
-// Mongoose Virtual 
+// Mongoose Virtual
 // studentSchema.virtual('fullname').get(function () {
 //     const {
 //         firstName,
@@ -213,8 +241,13 @@ const studentSchema = new Schema<TStudent>({
 //     } = this.name
 //     return `${firstName} ${lastName}`
 // })
-
-export const StudentModel = model<TStudent>('Student', studentSchema);
+/**
+ *
+ *
+ *
+ *
+ *
+ */
 
 // For Creating Static Methods
 // studentSchema.statics.isUserExist = async function (id: string) {
