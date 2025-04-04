@@ -1,4 +1,4 @@
-import { TAcademicSemester } from "../academic-semester/academicSemesterInterface";
+import { TAcademicSemester } from "../academic-semester/academicSemester.interface";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 

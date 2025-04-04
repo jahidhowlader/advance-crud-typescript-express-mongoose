@@ -1,6 +1,6 @@
-import { checkAcademicSemesternameAndCodeMapper } from "./academicSemesterConatant";
-import { TAcademicSemester } from "./academicSemesterInterface";
-import AcademicSemesterModel from "./academicSemesterModel";
+import { checkAcademicSemesternameAndCodeMapper } from "./academicSemester.conatant";
+import { TAcademicSemester } from "./academicSemester.interface";
+import AcademicSemesterModel from "./academicSemester.model";
 
 const crateAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
 

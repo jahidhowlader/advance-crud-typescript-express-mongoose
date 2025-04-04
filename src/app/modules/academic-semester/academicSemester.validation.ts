@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AcademicSemesterCode, AcademicSemesterName, Months } from "./academicSemesterConatant";
+import { AcademicSemesterCode, AcademicSemesterName, Months } from "./academicSemester.conatant";
 import { currentYear } from "../../utils/conatantUtils";
 
 const createAcademicSemesterValidationSchema = z.object({
