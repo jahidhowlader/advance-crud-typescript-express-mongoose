@@ -20,6 +20,8 @@ const userNameSchema = new Schema<TStudentName>({
         required: [true, "Last name is required"],
         trim: true,
     },
+}, {
+    _id: false
 });
 
 const guardianSchema = new Schema<TStudentGuardian>({
@@ -53,6 +55,8 @@ const guardianSchema = new Schema<TStudentGuardian>({
         required: [true, "Mother's contact number is required"],
         trim: true,
     },
+}, {
+    _id: false
 });
 
 const localGuardianSchema = new Schema<TStudentLocalGuardian>({
@@ -76,6 +80,8 @@ const localGuardianSchema = new Schema<TStudentLocalGuardian>({
         required: [true, "Local guardian's address is required"],
         trim: true,
     },
+}, {
+    _id: false
 });
 
 const studentSchema = new Schema<TStudent, TStudentMethods>({

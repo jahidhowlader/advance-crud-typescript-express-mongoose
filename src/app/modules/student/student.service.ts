@@ -41,9 +41,34 @@ const updateSingleStudentInDB = async (id: string, payload: Partial<TStudent>) =
         throw new AppError(status.NOT_FOUND, 'This user does not exist');
     }
 
+    const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+
+    const modifiedUpdatedData: Record<string, unknown> = {
+        ...remainingStudentData,
+    };
+
+    if (name && Object.keys(name).length) {
+        for (const [key, value] of Object.entries(name)) {
+            modifiedUpdatedData[`name.${key}`] = value;
+        }
+    }
+
+    if (guardian && Object.keys(guardian).length) {
+        for (const [key, value] of Object.entries(guardian)) {
+            modifiedUpdatedData[`guardian.${key}`] = value;
+        }
+    }
+
+    if (localGuardian && Object.keys(localGuardian).length) {
+        for (const [key, value] of Object.entries(localGuardian)) {
+            modifiedUpdatedData[`localGuardian.${key}`] = value;
+        }
+    }
+
+
     const result = await StudentModel.findOneAndUpdate(
         { id },
-        { $set: payload },
+        { $set: modifiedUpdatedData },
         { new: true, runValidators: true }
         // new: true means By default findOneAndUpdate() return old data new:true meand return new data
         // runValidators: true means By default findOneAndUpdate() do not check validation rules (schema level validation) ## runValidators: true mongoose schema validation enforce 
