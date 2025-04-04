@@ -1,13 +1,26 @@
-import { TAcademicDepartment } from "./academicDepartment.interface";
-import { AcademicDepartmentModel } from "./academicDepartment.model";
+import { Request, Response } from "express";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { AcademicDepartmentServices } from "./academicDepartment.service";
+import { status } from "http-status";
 
-const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
-    const result = await AcademicDepartmentModel.create(payload);
-    return result;
-};
+const createAcademicDepartmemt = catchAsync(
+    async (request: Request, response: Response): Promise<void> => {
+        const result = await AcademicDepartmentServices.createAcademicDepartmentIntoDB(request.body);
 
-export const AcademicDepartmentServices = {
-    createAcademicDepartmentIntoDB,
+        // Send response to utility send response function
+        sendResponse(request, response, {
+            status: status.CREATED,
+            success: true,
+            message: 'Student create successfully',
+            data: result
+        })
+    }
+)
+
+
+export const AcademicDepartmentControllers = {
+    createAcademicDepartmemt,
     // getAllAcademicDepartmentsFromDB,
     // getSingleAcademicDepartmentFromDB,
     // updateAcademicDepartmentIntoDB,

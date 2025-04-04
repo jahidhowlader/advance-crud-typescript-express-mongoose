@@ -4,9 +4,10 @@ import { TStudent } from "../student/student.interface";
 import sendResponse from "../../utils/sendResponse";
 import { status } from "http-status";
 import catchAsync from "../../utils/catchAsync";
+import { Request, Response } from "express";
 
 export const createStudent = catchAsync(
-    async (request, response): Promise<void> => {
+    async (request: Request, response: Response): Promise<void> => {
 
         const { password: passwordFromRequestBody, student: studentData }: { password: string, student: TStudent } = request.body
 

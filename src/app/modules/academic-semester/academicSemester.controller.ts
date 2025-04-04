@@ -2,9 +2,10 @@ import sendResponse from "../../utils/sendResponse";
 import { status } from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import { AcademicSemesterService } from "./academicSemester.service";
+import { Request, Response } from "express";
 
 export const createAcademicSemester = catchAsync(
-    async (request, response): Promise<void> => {
+    async (request: Request, response: Response): Promise<void> => {
 
         const createdAcademicSemester = await AcademicSemesterService.crateAcademicSemesterIntoDB(request.body);
 
@@ -19,7 +20,7 @@ export const createAcademicSemester = catchAsync(
 );
 
 const getAllAcademicSemesters = catchAsync(
-    async (request, response): Promise<void> => {
+    async (request: Request, response: Response): Promise<void> => {
         const result = await AcademicSemesterService.getAllAcademicSemestersFromDB();
 
         sendResponse(request, response, {
@@ -33,7 +34,7 @@ const getAllAcademicSemesters = catchAsync(
 );
 
 const getSingleAcademicSemester = catchAsync(
-    async (request, response): Promise<void> => {
+    async (request: Request, response: Response): Promise<void> => {
         const { semesterId } = request.params;
         const result = await AcademicSemesterService.getSingleAcademicSemesterFromDB(semesterId);
 
@@ -47,7 +48,7 @@ const getSingleAcademicSemester = catchAsync(
 );
 
 const updateAcademicSemester = catchAsync(
-    async (request, response): Promise<void> => {
+    async (request: Request, response: Response): Promise<void> => {
         const { semesterId } = request.params;
         const result = await AcademicSemesterService.updateAcademicSemesterIntoDB(semesterId, request.body);
 

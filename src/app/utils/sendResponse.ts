@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 
-interface Tresponse<T> {
+interface TResponse<T> {
     status: number,
     success: boolean,
     message?: string,
     data: T
 }
 
-const sendResponse = <T>(request: Request, response: Response, data: Tresponse<T>) => {
+const sendResponse = <T>(request: Request, response: Response, data: TResponse<T>) => {
 
     const startTime = request.startTime as number;
 
