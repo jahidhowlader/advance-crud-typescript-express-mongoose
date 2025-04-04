@@ -1,7 +1,12 @@
-import { NextFunction, Request, Response } from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
-const globalErrorHandler = (error: any, request: Request, response: Response, next: NextFunction) => {
+const globalErrorHandler: ErrorRequestHandler = (
+    error: any,
+    request: Request,
+    response: Response,
+    next: NextFunction
+): void => {
 
     const startTime = request.startTime as number;
 
@@ -9,7 +14,7 @@ const globalErrorHandler = (error: any, request: Request, response: Response, ne
     const message = error.message || 'something went wrong'
 
     if (error instanceof ZodError) {
-        return response
+        response
             .status(statusCode)
             .json({
                 success: false,
@@ -17,9 +22,10 @@ const globalErrorHandler = (error: any, request: Request, response: Response, ne
                 responseTime: `${Date.now() - startTime}ms`,
                 error: error.errors[0].message
             })
+        return
     }
 
-    return response
+    response
         .status(statusCode)
         .json({
             success: false,
@@ -27,6 +33,7 @@ const globalErrorHandler = (error: any, request: Request, response: Response, ne
             responseTime: `${Date.now() - startTime}ms`,
             error
         })
+    return
 }
 
 export default globalErrorHandler
