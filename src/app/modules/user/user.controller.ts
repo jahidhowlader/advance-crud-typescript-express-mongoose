@@ -4,10 +4,9 @@ import { TStudent } from "../student/student.interface";
 import sendResponse from "../../utils/sendResponse";
 import { status } from "http-status";
 import catchAsync from "../../utils/catchAsync";
-import { Request, Response } from "express";
 
 export const createStudent = catchAsync(
-    async (request: Request, response: Response): Promise<void> => {
+    async (request, response) => {
 
         const { password: passwordFromRequestBody, student: studentData }: { password: string, student: TStudent } = request.body
 
@@ -26,6 +25,34 @@ export const createStudent = catchAsync(
     }
 )
 
+const createFaculty = catchAsync(async (request, response) => {
+    const { password, faculty: facultyData } = request.body;
+
+    const result = await UserServices.createFacultyIntoDB(password, facultyData);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Faculty is created succesfully',
+        data: result,
+    });
+});
+
+const createAdmin = catchAsync(async (request, response) => {
+    const { password, admin: adminData } = request.body;
+
+    const result = await UserServices.createAdminIntoDB(password, adminData);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Admin is created succesfully',
+        data: result,
+    });
+});
+
 export const UserController = {
-    createStudent
+    createStudent,
+    createFaculty,
+    createAdmin
 } 
