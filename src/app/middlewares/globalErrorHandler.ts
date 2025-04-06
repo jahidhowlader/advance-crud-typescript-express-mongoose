@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import handleZodError from "../errors/handleZodError";
@@ -12,7 +13,6 @@ const globalErrorHandler: ErrorRequestHandler = (
     error,
     request,
     response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next
 ): void => {
 
