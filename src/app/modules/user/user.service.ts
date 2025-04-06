@@ -117,9 +117,7 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
 
     try {
         userData.id = await generateAdminId();
-
         const newUser = await UserModel.create([userData], { session });
-
         if (!newUser.length) {
             throw new AppError(status.BAD_REQUEST, 'Failed to create admin');
         }

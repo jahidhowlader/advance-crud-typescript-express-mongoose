@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { TAdmin, TAdminModel, TUserName } from './admin.interface';
 import { BloodGroup, Gender } from './admin.constant';
 
-const userNameSchema = new Schema<TUserName>({
+const UserNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, 'First Name is required'],
@@ -21,7 +21,7 @@ const userNameSchema = new Schema<TUserName>({
     },
 });
 
-const adminSchema = new Schema<TAdmin, TAdminModel>(
+const AdminSchema = new Schema<TAdmin, TAdminModel>(
     {
         id: {
             type: String,
@@ -39,7 +39,7 @@ const adminSchema = new Schema<TAdmin, TAdminModel>(
             required: [true, 'Designation is required'],
         },
         name: {
-            type: userNameSchema,
+            type: UserNameSchema,
             required: [true, 'Name is required'],
         },
         gender: {
@@ -90,7 +90,7 @@ const adminSchema = new Schema<TAdmin, TAdminModel>(
 );
 
 // generating full name
-adminSchema.virtual('fullName').get(function () {
+AdminSchema.virtual('fullName').get(function () {
     return (
         this?.name?.firstName +
         '' +
@@ -101,25 +101,25 @@ adminSchema.virtual('fullName').get(function () {
 });
 
 // filter out deleted documents
-adminSchema.pre('find', function (next) {
+AdminSchema.pre('find', function (next) {
     this.find({ isDeleted: { $ne: true } });
     next();
 });
 
-adminSchema.pre('findOne', function (next) {
+AdminSchema.pre('findOne', function (next) {
     this.find({ isDeleted: { $ne: true } });
     next();
 });
 
-adminSchema.pre('aggregate', function (next) {
+AdminSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
 
 //checking if user is already exist!
-adminSchema.statics.isUserExists = async function (id: string) {
+AdminSchema.statics.isUserExists = async function (id: string) {
     const existingUser = await AdminModel.findOne({ id });
     return existingUser;
 };
 
-export const AdminModel = model<TAdmin, TAdminModel>('Admin', adminSchema);
+export const AdminModel = model<TAdmin, TAdminModel>('Admin', AdminSchema);
