@@ -21,8 +21,8 @@ export interface TUserModel extends Model<TUser> {
     //instance methods for checking if passwords are matched
     isPasswordMatched(plainTextPassword: string, hashedPassword: string): Promise<boolean>;
 
-    // isJWTIssuedBeforePasswordChanged(
-    //     passwordChangedTimestamp: Date,
-    //     jwtIssuedTimestamp: number,
-    // ): boolean;
+    isJWTIssuedBeforePasswordChanged(
+        passwordChangedTimestamp: Date,
+        jwtIssuedTimestamp: number,
+    ): boolean;
 }
