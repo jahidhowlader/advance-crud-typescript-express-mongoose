@@ -3,8 +3,9 @@ import AppError from '../errors/AppError';
 import catchAsync from '../utils/catchAsync';
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from '../config';
+import { TUserRole } from '../modules/user/user.interface';
 
-const auth = () => {
+const auth = (...requiredRoles: TUserRole[]) => {
 
     return catchAsync(async (request, response, next) => {
 
