@@ -5,9 +5,8 @@ import { studentValidation } from './student.zod.validation';
 
 const router = express.Router();
 
-router.get('/', StudentControllers.getAllStudents);
-
 router
+    .get('/', StudentControllers.getAllStudents)
     .get('/:studentId', StudentControllers.getSingleStudent)
     .patch(
         '/:studentId',

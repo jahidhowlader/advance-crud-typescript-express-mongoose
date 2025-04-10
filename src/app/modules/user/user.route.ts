@@ -9,23 +9,21 @@ import { USER_ROLE } from './user.constant';
 
 const router = express.Router();
 
-router.post(
-    '/create-student',
-    auth(USER_ROLE.admin),
-    validateRequest(studentValidation.createStudentValidationSchema),
-    UserController.createStudent
-);
-
-router.post(
-    '/create-faculty',
-    validateRequest(createFacultyValidationSchema),
-    UserController.createFaculty,
-);
-
-router.post(
-    '/create-admin',
-    validateRequest(createAdminValidationSchema),
-    UserController.createAdmin,
-);
+router
+    .post(
+        '/create-student',
+        auth(USER_ROLE.admin),
+        validateRequest(studentValidation.createStudentValidationSchema),
+        UserController.createStudent
+    ).post(
+        '/create-faculty',
+        validateRequest(createFacultyValidationSchema),
+        UserController.createFaculty,
+    )
+    .post(
+        '/create-admin',
+        validateRequest(createAdminValidationSchema),
+        UserController.createAdmin,
+    );
 
 export const UserRoutes = router;
