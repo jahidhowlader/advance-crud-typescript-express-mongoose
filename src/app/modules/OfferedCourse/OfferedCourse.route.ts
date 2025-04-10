@@ -5,16 +5,20 @@ import { OfferedCourseValidations } from './offeredCourse.validation';
 
 const router = express.Router();
 
-router.get('/', OfferedCourseControllers.getAllOfferedCourses);
-
-router.post(
-    '/create-offered-course',
-    validateRequest(OfferedCourseValidations.createOfferedCourseValidationSchema),
-    OfferedCourseControllers.createOfferedCourse,
-);
-
 router
-    .get('/:id', OfferedCourseControllers.getSingleOfferedCourses)
+    .get(
+        '/',
+        OfferedCourseControllers.getAllOfferedCourses
+    )
+    .get(
+        '/:id',
+        OfferedCourseControllers.getSingleOfferedCourses
+    )
+    .post(
+        '/create-offered-course',
+        validateRequest(OfferedCourseValidations.createOfferedCourseValidationSchema),
+        OfferedCourseControllers.createOfferedCourse,
+    )
     .patch(
         '/:id',
         validateRequest(OfferedCourseValidations.updateOfferedCourseValidationSchema),

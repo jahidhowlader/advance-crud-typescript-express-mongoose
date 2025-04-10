@@ -7,9 +7,9 @@ import { AcademicDepartmentRoutes } from "../modules/academic-department/academi
 import { FacultyRoutes } from "../modules/faculty/faculty.route";
 import { AdminRoutes } from "../modules/admin/admin.route";
 import { CourseRoutes } from "../modules/course/course.route";
-import { offeredCourseRoutes } from "../modules/OfferedCourse/OfferedCourse.route";
+import { offeredCourseRoutes } from "../modules/offeredCourse/OfferedCourse.route";
 import { semesterRegistrationRoutes } from "../modules/semesterRegistration/semesterRegistration.route";
-import { AuthRoutes } from "../modules/Auth/auth.route";
+import { AuthRoutes } from "../modules/auth/auth.route";
 
 const router = Router();
 
