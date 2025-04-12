@@ -1,23 +1,23 @@
 import nodemailer from 'nodemailer'
 
-export const sendEmail = async () => {
+export const sendEmail = async (to: string, html: string,) => {
 
     const transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
+        host: "smtp.gmail.com",
         port: 587,
         secure: false, // true for port 465, false for other ports
         auth: {
-            user: "maddison53@ethereal.email",
-            pass: "jn7jnAPss4f63QBp6D",
+            user: "jahid.h@devsnest.llc",
+            pass: "jeov ptya syom jhpu",
         },
     });
 
     await transporter.sendMail({
-        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-        to: "bar@example.com, baz@example.com", // list of receivers
-        subject: "Hello ✔", // Subject line
+        from: 'jahid.h@devsnest.llc', // sender address
+        to, // list of receivers
+        subject: "forget password within 10 mints", // Subject line
         text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        html, // html body
     });
 
 }

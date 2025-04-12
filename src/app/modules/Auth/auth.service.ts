@@ -6,6 +6,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { TLoginUser } from "./auth.interface";
 import { createToken } from "./auth.utils";
+import { sendEmail } from "../../utils/sendEmail";
 
 const loginUser = async (payload: TLoginUser) => {
 
@@ -185,7 +186,8 @@ const forgetPassword = async (userId: string) => {
         '10m',
     );
 
-    return resetToken
+    const resetLink = `${config.RESET_PASSWORD_UI_LINK}?id=${user.id}&token=${resetToken}`
+    sendEmail(user.email, resetLink)
 }
 
 export const AuthServices = {
