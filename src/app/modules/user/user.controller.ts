@@ -51,8 +51,28 @@ const createAdmin = catchAsync(async (request, response) => {
     });
 });
 
+const getMe = catchAsync(async (request, response) => {
+    // const token = req.headers.authorization;
+
+    // if (!token) {
+    //   throw new AppError(httpStatus.NOT_FOUND, 'Token not found !');
+    // }
+
+    const { userId, role } = request.user;
+
+    const result = await UserServices.getMe(userId, role);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'User is retrieved succesfully',
+        data: result,
+    });
+});
+
 export const UserController = {
     createStudent,
     createFaculty,
-    createAdmin
+    createAdmin,
+    getMe
 } 

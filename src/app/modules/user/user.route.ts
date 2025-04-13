@@ -10,6 +10,11 @@ import { USER_ROLE } from './user.constant';
 const router = express.Router();
 
 router
+    .get(
+        '/me',
+        auth('student', 'faculty', 'admin'),
+        UserController.getMe
+    )
     .post(
         '/create-student',
         auth(USER_ROLE.admin),
@@ -17,6 +22,7 @@ router
         UserController.createStudent
     ).post(
         '/create-faculty',
+        auth(USER_ROLE.admin),
         validateRequest(createFacultyValidationSchema),
         UserController.createFaculty,
     )

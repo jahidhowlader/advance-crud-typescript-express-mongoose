@@ -36,3 +36,5 @@ router
     );
 
 export const AuthRoutes = router;
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJBLTAwMDEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQ1MjA3MzYsImV4cCI6MTc0NDUyMTMzNn0.5N83yGmlPZX_aFYW4_41ZbdNLp-wkW6QIKNMcseOwQk
