@@ -6,9 +6,13 @@ import catchAsync from "../../utils/catchAsync";
 import { userValidation } from "./user.validation";
 
 export const createStudent = catchAsync(
+
     async (request, response) => {
 
-        const { password: passwordFromRequestBody, student: studentData }: { password: string, student: TStudent } = request.body
+        const {
+            password: passwordFromRequestBody,
+            student: studentData
+        }: { password: string, student: TStudent } = request.body
 
         // Validate request body with ZOD
         const { password } = userValidation.userValidationSchema.parse({ password: passwordFromRequestBody })
@@ -26,9 +30,14 @@ export const createStudent = catchAsync(
 )
 
 const createFaculty = catchAsync(async (request, response) => {
+
     const { password, faculty: facultyData } = request.body;
 
-    const result = await UserServices.createFacultyIntoDB(password, facultyData);
+    const result = await UserServices.createFacultyIntoDB(
+        request.file,
+        password,
+        facultyData,
+    );
 
     sendResponse(request, response, {
         status: status.OK,
@@ -52,7 +61,7 @@ const createAdmin = catchAsync(async (request, response) => {
 });
 
 const getMe = catchAsync(async (request, response) => {
-    
+
     // const token = req.headers.authorization;
     // if (!token) {
     //   throw new AppError(httpStatus.NOT_FOUND, 'Token not found !');
@@ -70,7 +79,7 @@ const getMe = catchAsync(async (request, response) => {
 });
 
 const changeStatus = catchAsync(async (request, response) => {
-    
+
     const id = request.params.id;
     const result = await UserServices.changeStatus(id, request.body);
 

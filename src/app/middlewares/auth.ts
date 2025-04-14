@@ -8,6 +8,7 @@ import { UserModel } from "../modules/user/user.model";
 import jwt from "jsonwebtoken";
 
 const auth = (...requiredRoles: TUserRole[]) => {
+    
     return catchAsync(async (request, response, next) => {
         const token = request.headers.authorization;
 

@@ -14,8 +14,13 @@ import { AcademicDepartmentModel } from "../academic-department/academicDepartme
 import { TFaculty } from "../faculty/faculty.interface";
 import { FacultyModel } from "../faculty/faculty.model";
 import { AdminModel } from "../admin/admin.model";
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 
-const createStudentIntoDB = async (password: string, payload: TStudent) => {
+const createStudentIntoDB = async (
+    // file: any,
+    password: string,
+    payload: TStudent
+) => {
 
     const userData: Partial<TUser> = {};
 
@@ -64,7 +69,11 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     }
 };
 
-const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+const createFacultyIntoDB = async (
+    file: any,
+    password: string,
+    payload: TFaculty
+) => {
 
     const userData: Partial<TUser> = {};
     userData.password = password || (config.DEFAULT_PASSWORD as string);
@@ -84,6 +93,10 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
     try {
         userData.id = await generateFacultyId();
+        const imageName = `${userData.id}${payload?.name?.firstName}`;
+        const path = file?.path;
+        //send image to cloudinary
+        const { secure_url } = await sendImageToCloudinary(imageName, path);
 
         const newUser = await UserModel.create([userData], { session }); // array
         if (!newUser.length) {
@@ -92,6 +105,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
         payload.id = newUser[0].id;
         payload.user = newUser[0]._id; //reference _id
+        payload.profileImg = secure_url;
 
         const newFaculty = await FacultyModel.create([payload], { session });
         if (!newFaculty.length) {
@@ -109,7 +123,11 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
     }
 };
 
-const createAdminIntoDB = async (password: string, payload: TFaculty) => {
+const createAdminIntoDB = async (
+    // file: any,
+    password: string,
+    payload: TFaculty
+) => {
 
     const userData: Partial<TUser> = {};
     userData.password = password || (config.DEFAULT_PASSWORD as string);
@@ -146,6 +164,7 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
 };
 
 const getMe = async (userId: string, role: string) => {
+
     // const decoded = verifyToken(token, config.jwt_access_secret as string);
     // const { userId, role } = decoded;
 
