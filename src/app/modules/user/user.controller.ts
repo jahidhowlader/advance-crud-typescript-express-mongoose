@@ -1,9 +1,9 @@
 import { UserServices } from "./user.service";
-import userValidationSchema from "./user.validation";
 import { TStudent } from "../student/student.interface";
 import sendResponse from "../../utils/sendResponse";
 import { status } from "http-status";
 import catchAsync from "../../utils/catchAsync";
+import { userValidation } from "./user.validation";
 
 export const createStudent = catchAsync(
     async (request, response) => {
@@ -11,7 +11,7 @@ export const createStudent = catchAsync(
         const { password: passwordFromRequestBody, student: studentData }: { password: string, student: TStudent } = request.body
 
         // Validate request body with ZOD
-        const { password } = userValidationSchema.parse({ password: passwordFromRequestBody })
+        const { password } = userValidation.userValidationSchema.parse({ password: passwordFromRequestBody })
         // response data after create student
         const createdStudent = await UserServices.createStudentIntoDB(password, studentData);
 
@@ -52,14 +52,13 @@ const createAdmin = catchAsync(async (request, response) => {
 });
 
 const getMe = catchAsync(async (request, response) => {
+    
     // const token = req.headers.authorization;
-
     // if (!token) {
     //   throw new AppError(httpStatus.NOT_FOUND, 'Token not found !');
     // }
 
     const { userId, role } = request.user;
-
     const result = await UserServices.getMe(userId, role);
 
     sendResponse(request, response, {
@@ -70,9 +69,23 @@ const getMe = catchAsync(async (request, response) => {
     });
 });
 
+const changeStatus = catchAsync(async (request, response) => {
+    
+    const id = request.params.id;
+    const result = await UserServices.changeStatus(id, request.body);
+
+    sendResponse(request, response, {
+        status: status.OK,
+        success: true,
+        message: 'Status is updated succesfully',
+        data: result,
+    });
+});
+
 export const UserController = {
     createStudent,
     createFaculty,
     createAdmin,
-    getMe
+    getMe,
+    changeStatus
 } 
