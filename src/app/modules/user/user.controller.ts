@@ -13,11 +13,15 @@ export const createStudent = catchAsync(
             password: passwordFromRequestBody,
             student: studentData
         }: { password: string, student: TStudent } = request.body
-
         // Validate request body with ZOD
         const { password } = userValidation.userValidationSchema.parse({ password: passwordFromRequestBody })
+
         // response data after create student
-        const createdStudent = await UserServices.createStudentIntoDB(password, studentData);
+        const createdStudent = await UserServices.createStudentIntoDB(
+            request.file,
+            password,
+            studentData
+        );
 
         // Send response to utility send response function
         sendResponse(request, response, {
@@ -50,7 +54,12 @@ const createFaculty = catchAsync(async (request, response) => {
 const createAdmin = catchAsync(async (request, response) => {
 
     const { password, admin: adminData } = request.body;
-    const result = await UserServices.createAdminIntoDB(password, adminData);
+
+    const result = await UserServices.createAdminIntoDB(
+        request.file,
+        password,
+        adminData
+    );
 
     sendResponse(request, response, {
         status: status.OK,

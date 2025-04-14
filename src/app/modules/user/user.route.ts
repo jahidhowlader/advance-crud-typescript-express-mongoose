@@ -21,8 +21,8 @@ router
         '/create-student',
         auth(USER_ROLE.admin),
         upload.single('file'),
-        (req: Request, res: Response, next: NextFunction) => {
-            req.body = JSON.parse(req.body.data);
+        (request: Request, response: Response, next: NextFunction) => {
+            request.body = JSON.parse(request.body.data);
             next();
         },
         validateRequest(studentValidation.createStudentValidationSchema),
@@ -31,8 +31,8 @@ router
         '/create-faculty',
         auth(USER_ROLE.admin),
         upload.single('file'),
-        (req: Request, res: Response, next: NextFunction) => {
-            req.body = JSON.parse(req.body.data);
+        (request: Request, response: Response, next: NextFunction) => {
+            request.body = JSON.parse(request.body.data);
             next();
         },
         validateRequest(createFacultyValidationSchema),
@@ -40,6 +40,11 @@ router
     )
     .post(
         '/create-admin',
+        upload.single('file'),
+        (request: Request, response: Response, next: NextFunction) => {
+            request.body = JSON.parse(request.body.data);
+            next();
+        },
         validateRequest(createAdminValidationSchema),
         UserController.createAdmin,
     )
