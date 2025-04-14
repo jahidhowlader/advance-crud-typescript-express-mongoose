@@ -11,6 +11,9 @@ interface IConfig {
     JWT_ACCESS_EXPIRES_IN: string
     JWT_REFRESH_EXPIRES_IN: string
     RESET_PASSWORD_UI_LINK: string
+    CLOUDINARY_CLOUD_NAME: string
+    CLOUDINARY_API_KEY: string
+    CLOUDINARY_API_SECRET: string
 }
 
 dotenv.config();
@@ -25,7 +28,10 @@ const config: IConfig = {
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
     JWT_ACCESS_EXPIRES_IN: process.env.JWT_ACCESS_EXPIRES_IN as string,
     JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as string,
-    RESET_PASSWORD_UI_LINK: process.env.RESET_PASSWORD_UI_LINK as string
+    RESET_PASSWORD_UI_LINK: process.env.RESET_PASSWORD_UI_LINK as string,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
 };
 
 export default config;
